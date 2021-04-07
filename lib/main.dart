@@ -25,11 +25,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _accessToken = '';
+  int _cases = 0;
 
   getAccessToken() async {
     final apiService = APIService(API.sandbox());
     final accessToken = await apiService.getAccessToken();
-    setState(() => _accessToken = accessToken);
+    final cases = await apiService.getEndPointData(
+        accessToken: accessToken, endpoint: Endpoints.cases);
+    setState(() {
+      _accessToken = accessToken;
+      _cases = cases;
+    });
   }
 
   @override
@@ -37,7 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text('App')),
       body: Center(
-        child: Text(_accessToken),
+        child: Column(
+          children: [
+            Text(_accessToken),
+            Text('$_cases'),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(onPressed: getAccessToken),
     );

@@ -23,4 +23,35 @@ class APIService {
     );
     throw response;
   }
+
+  Future<int> getEndPointData({
+    required String accessToken,
+    required Endpoints endpoint,
+  }) async {
+    final response = await http.get(
+      api.endpointsUri(endpoint),
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
+    if (response.statusCode == 200) {
+      List<dynamic> data = convert.jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        Map<String, dynamic> endpointData = data[0];
+        final String? responseJsonKey = _responsesJsonKeys[endpoint];
+        final int result = endpointData[responseJsonKey];
+        return result;
+      }
+    }
+    print(
+      'Request ${api.apiKey} failed\nResponse: ${response.statusCode} ${response.reasonPhrase}',
+    );
+    throw response;
+  }
+
+  static Map<Endpoints, String> _responsesJsonKeys = {
+    Endpoints.cases: "cases",
+    Endpoints.casesConfirmed: "data",
+    Endpoints.deaths: "data",
+    Endpoints.recovered: "data",
+    Endpoints.casesSuspected: "data"
+  };
 }
