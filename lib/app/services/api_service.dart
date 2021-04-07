@@ -19,7 +19,8 @@ class APIService {
       }
     }
     print(
-        'Request ${api.apiKey} failed\nResponse: ${response.statusCode} ${response.reasonPhrase}',);
+      'Request ${api.apiKey} failed\nResponse: ${response.statusCode} ${response.reasonPhrase}',
+    );
     throw response;
   }
 }
