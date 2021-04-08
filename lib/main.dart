@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'app/services/api.dart';
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.dark(),
       themeMode: ThemeMode.dark,
       home: MyHomePage(),
     );
@@ -72,11 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             Text(_accessToken),
-            Text('cases: $_cases'),
+            if (Platform.isIOS) Text('cases: $_cases'),
             Text('casesConfirmed: $_casesConfirmed'),
             Text('casesSuspected: $_casesSuspected'),
             Text('recovered: $_recovered'),
             Text('deaths: $_deaths'),
+            Switch(
+              onChanged: (bool value) {},
+              value: true,
+            ),
           ],
         ),
       ),
