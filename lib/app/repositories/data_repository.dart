@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 import '../services/api.dart';
 
 import '../services/api_service.dart';
@@ -8,12 +10,23 @@ class DataRepository {
   String? _accessToken;
 
   Future<int> getEndpointData(Endpoints endpoint) async {
-    _accessToken = await apiService.getAccessToken();
-    await apiService.getEndPointData(
-      accessToken: _accessToken!,
-      endpoint: endpoint,
-    );
-    String accessToken = '';
-    throw accessToken;
+    try {
+      if (_accessToken == null) {
+        _accessToken = await apiService.getAccessToken();
+      } 
+      return await apiService.getEndPointData(
+        accessToken: _accessToken!,
+        endpoint: endpoint,
+      );
+    } on Response catch (response) {
+      if (response.statusCode == 401) {
+        _accessToken = await apiService.getAccessToken();
+        return await apiService.getEndPointData(
+          accessToken: _accessToken!,
+          endpoint: endpoint,
+        );
+      }
+      rethrow;
+    }
   }
 }
