@@ -12,21 +12,16 @@ class EndpointCard extends StatelessWidget {
       child: Card(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
                 'Cases',
                 style: Theme.of(context).textTheme.headline5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    value != null ? '$value' : '',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ],
+              Text(
+                value != null ? '$value' : '',
+                style: Theme.of(context).textTheme.headline4,
               ),
             ],
           ),
